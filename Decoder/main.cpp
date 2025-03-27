@@ -1,14 +1,60 @@
-//
-//  main.cpp
-//  Decoder
-//
-//  Created by Donovan McCarthy on 3/27/25.
-//
-
 #include <iostream>
+#include <string>
+#include <vector>
+#include "adaptive_model.h"
+#include "arithmetic_encoder.h"
+#include "arithmetic_decoder.h"
 
-int main(int argc, const char * argv[]) {
-    // insert code here...
-    std::cout << "Hello, World!\n";
-    return 0;
+int main() 
+{
+  std::cout << "Enter Message: ";
+  std::string message;
+  std::getline(std::cin, message);
+
+  const int EOF_SYMBOL = 256;
+  std::vector<int> data;
+  for (char ch : message) 
+  {
+    data.push_back(static_cast<int>(ch));
+  }
+  data.push_back(EOF_SYMBOL);
+
+  // Encoding
+  AdaptiveModel modelEncoder;
+  ArithmeticEncoder encoder;
+  for (int symbol : data) 
+  {
+    encoder.encodeSymbol(symbol, modelEncoder);
+    modelEncoder.update(symbol);
+  }
+  std::string encoded_bits = encoder.finish();
+  std::cout << "\nEncoded bit stream:\n" << encoded_bits << "\n";
+
+  // Decoding
+  AdaptiveModel modelDecoder;
+  ArithmeticDecoder decoder(encoded_bits);
+  std::vector<int> decodedSymbols;
+
+  while (true) 
+  {
+    int symbol = decoder.decodeSymbol(modelDecoder);
+    modelDecoder.update(symbol);
+
+    if (symbol == EOF_SYMBOL)
+    {
+      break;
+    }
+    decodedSymbols.push_back(symbol);
+  }
+
+  std::string decodedMessage;
+
+  for (int s : decodedSymbols) 
+  {
+    decodedMessage.push_back(static_cast<char>(s));
+  }
+
+  std::cout << "\nDecoded message:\n" << decodedMessage << "\n";
+
+  return 0;
 }
