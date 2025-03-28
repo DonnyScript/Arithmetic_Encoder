@@ -30,6 +30,9 @@ int main()
   std::string encoded_bits = encoder.finish();
   std::cout << "\nEncoded bit stream:\n" << encoded_bits << "\n";
 
+  double entropy = encoded_bits.length()/ data.size(); // Calculate entropy in bits per symbol
+  std::cout << "Entropy of the encoded message: " << entropy << " bits per symbol\n";
+
   // Decoding
   AdaptiveModel modelDecoder;
   ArithmeticDecoder decoder(encoded_bits);
@@ -55,8 +58,7 @@ int main()
   }
 
   std::cout << "\nDecoded message:\n" << decodedMessage << "\n";
-  double entropy = encoded_bits.length()/ data.size(); // Calculate entropy in bits per symbol
-  std::cout << "Entropy of the encoded message: " << entropy << " bits per symbol\n";
+
 
   return 0;
 }

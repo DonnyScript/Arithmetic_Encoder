@@ -19,8 +19,8 @@ class ArithmeticEncoder
     std::string output; // Contains the encoded bit stream
 
   private:
-    int low, high;
-    int pending_bits;
+    unsigned short low, high;
+    unsigned pending_bits;
     void outputBit(int bit);
     void scale();
 };
