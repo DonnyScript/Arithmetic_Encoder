@@ -30,7 +30,7 @@ int main()
   std::string encoded_bits = encoder.finish();
   std::cout << "\nEncoded bit stream:\n" << encoded_bits << "\n";
 
-  double entropy = encoded_bits.length()/ data.size(); // Calculate entropy in bits per symbol
+  double entropy = static_cast<double>(encoded_bits.length()) / static_cast<double>(data.size() - 1);  
   std::cout << "Entropy of the encoded message: " << entropy << " bits per symbol\n";
 
   // Decoding

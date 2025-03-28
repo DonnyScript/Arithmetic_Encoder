@@ -9,7 +9,7 @@ void ArithmeticEncoder::encodeSymbol(int symbol, AdaptiveModel& model)
   unsigned int cum_high = range.second;
   unsigned int total = model.total;
   unsigned int range_width = high - low + 1;
-  high = low + (range_width * cum_high) / total;
+  high = low + (range_width * cum_high) / total - 1;
   low = low + (range_width * cum_low) / total;
   unsigned int underflow_counter = 0;
 
@@ -25,7 +25,7 @@ void ArithmeticEncoder::encodeSymbol(int symbol, AdaptiveModel& model)
     {
       outputBit((low_for_calc & first_bit_mask) ? 1 : 0); // Output the bit corresponding to the MSB of low (or high, since they are the same)
       low_for_calc = (clear_mask & low_for_calc) << 1;      // shifts low and replaces with a 0
-      high_for_calc = ((clear_mask & high) << 1) | 1; // shifts high and replaces with a 1
+      high_for_calc = ((clear_mask & high_for_calc) << 1) | 1; // shifts high and replaces with a 1
     }
     else if((high_for_calc & second_bit_mask) == (low_for_calc & second_bit_mask))
     {
