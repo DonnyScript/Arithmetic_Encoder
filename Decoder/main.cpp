@@ -7,7 +7,7 @@
 
 int main() 
 {
-  std::cout << "Enter Message: ";
+  std::cout << "\nEnter Message: ";
   std::string message;
   std::getline(std::cin, message);
 
@@ -55,6 +55,8 @@ int main()
   }
 
   std::cout << "\nDecoded message:\n" << decodedMessage << "\n";
+  double entropy = encoded_bits.length()/ data.size(); // Calculate entropy in bits per symbol
+  std::cout << "Entropy of the encoded message: " << entropy << " bits per symbol\n";
 
   return 0;
 }
